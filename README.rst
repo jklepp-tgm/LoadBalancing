@@ -139,6 +139,18 @@ Least Connection
 Session Persistence
 ~~~~~~~~~~~~~~~~~~~
 
+In Nginx, session persistence can be achieved by using the 'ip_hash' algorithm.
+The ip_hash algorithm will assign a client to a server on their first request
+and reconnect to the same server on each consecutive one.
+
+If the assigned server becomes unavailable, the client will be re-assigned to
+a new server.
+
+Nginx decides which server will be used based on the client's IP address, in
+IPv4 the first three octets, in IPv6 the entire address.
+
+It is also possible to weigh each server (similar to weighted RR above).
+
 .. code:: conf
 
     worker_processes  99;
@@ -170,8 +182,8 @@ Testing
 ~~~~~~~
 
 
-Least connections
------------------
+Least connection
+----------------
 
 In order to test the balancing, we use the tool Apache Bench, short 'ab', which
 simulates c concurrent connections and runs until n total requests were completed.
