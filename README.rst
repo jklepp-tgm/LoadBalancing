@@ -24,6 +24,18 @@ Modalitäten
 Gruppenarbeit: 2 Personen
 Abgabe: Protokoll mit Designüberlegungen / Umsetzung / Testszenarien, Sourcecode (mit allen notwendigen Bibliotheken), Java-Doc, Jar
 
+Nginx installation
+~~~~~~~~~~~~~~~~~~
+
+.. code:: bash
+
+    wget http://nginx.org/download/nginx-1.7.8.tar.gz
+    tar xf nginx-1.7.8.tar.gz
+    cd nginx-1.7.8/
+    ./configure --prefix=$(pwd)/.. --with-cc=clang --with-cpp=clang++
+    make
+    make install
+
 Weighted Round-Round
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -54,6 +66,8 @@ Jakob Klepp
 ================================= ========== ===== ===== =========
 Task                              Date       From  To    Duration
 ================================= ========== ===== ===== =========
+design                            2014-12-12 08:00 08:30   00:30
+Weighted Round-Robin              2014-12-12 08:30 
 **TOTAL**                                                **00:00**
 ================================= ========== ===== ===== =========
 
