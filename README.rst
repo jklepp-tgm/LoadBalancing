@@ -27,6 +27,11 @@ Abgabe: Protokoll mit Designüberlegungen / Umsetzung / Testszenarien, Sourcecod
 Nginx installation
 ~~~~~~~~~~~~~~~~~~
 
+To install Nginx, follow the instructions below.
+Alternatively, one can also use the system's package manager, the package name
+is nginx.
+
+
 .. code:: bash
 
     wget http://nginx.org/download/nginx-1.7.8.tar.gz
@@ -35,6 +40,12 @@ Nginx installation
     ./configure --prefix=$(pwd)/..
     make
     make install
+
+Nginx configuration
+~~~~~~~~~~~~~~~~~~~
+
+All the following configuration is done in the file nginx.conf, which can be found
+either in /usr/local/nginx/conf/ or in whether directory you compiled nginx in.
 
 Weighted Round-Round
 ~~~~~~~~~~~~~~~~~~~~
