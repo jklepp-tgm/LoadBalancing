@@ -22,13 +22,13 @@ SCRIPT
 
 $start_servers = <<SCRIPT
 cd /web/server1
-screen -c /dev/null -dmS server1 python3 -m http.server 8001
+screen -c /dev/null -dmS server1 python3 -m http.server 9001
 cd /web/server2
-screen -c /dev/null -dmS server2 python3 -m http.server 8002
+screen -c /dev/null -dmS server2 python3 -m http.server 9002
 cd /web/server3
-screen -c /dev/null -dmS server3 python3 -m http.server 8003
+screen -c /dev/null -dmS server3 python3 -m http.server 9003
 cd /web/server4
-screen -c /dev/null -dmS server4 python3 -m http.server 8004
+screen -c /dev/null -dmS server4 python3 -m http.server 9004
 SCRIPT
 
 $start_nginx = <<SCRIPT
@@ -54,11 +54,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  config.vm.network "forwarded_port", guest: 8000, host: 9000
-  config.vm.network "forwarded_port", guest: 8001, host: 9001
-  config.vm.network "forwarded_port", guest: 8002, host: 9002
-  config.vm.network "forwarded_port", guest: 8003, host: 9003
-  config.vm.network "forwarded_port", guest: 8004, host: 9004
+  config.vm.network "forwarded_port", guest: 9000, host: 9000
+  config.vm.network "forwarded_port", guest: 9001, host: 9001
+  config.vm.network "forwarded_port", guest: 9002, host: 9002
+  config.vm.network "forwarded_port", guest: 9003, host: 9003
+  config.vm.network "forwarded_port", guest: 9004, host: 9004
 
   config.vm.provision "shell", inline: $install_dependencies
   config.vm.provision "shell", inline: $install_nginx, privileged: false
