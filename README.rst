@@ -72,14 +72,37 @@ Weighted Round-Round
       } 
     }
 
-Session Persistence
--------------------
-
 Least Connection
 ~~~~~~~~~~~~~~~~
 
+.. code:: conf
+
+    worker_processes  99;
+
+    events {    
+        worker_connections  1024;
+    }
+
+    http {
+      upstream balancer{
+        least_conn;
+        server 127.0.0.1:8000;
+        server 127.0.0.1:8001;
+        server 127.0.0.1:8002;
+        server 127.0.0.1:8003;
+      } 
+        
+      server { 
+        listen 8080;
+        server_name balancer.least_conn;
+        location / {
+          proxy_pass http://balancer;
+        }
+      } 
+    }
+
 Session Persistence
--------------------
+~~~~~~~~~~~~~~~~~~~
 
 Time recording
 ~~~~~~~~~~~~~~
@@ -109,3 +132,4 @@ Sources
 
 [1] "Praktische Arbeit 2 zur Vorlesung 'Verteilte Systeme' ETH Zürich, SS 2002", Prof.Dr.B.Plattner, übernommen von Prof.Dr.F.Mattern (http://www.tik.ee.ethz.ch/tik/education/lectures/VS/SS02/Praktikum/aufgabe2.pdf)
 [2] http://www.tik.ee.ethz.ch/education/lectures/VS/SS02/Praktikum/loesung2.zip
+[3] "Using nginx as HTTP load balancer", NGINX, http://nginx.org/en/docs/http/load_balancing.html, last visited: 2014-12-12
