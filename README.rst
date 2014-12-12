@@ -69,6 +69,7 @@ The servers are being started like this (Python3 required):
     screen -c /dev/null -dmS server3 python3 -m http.server 8003
     cd $BASE/web/server4
     screen -c /dev/null -dmS server4 python3 -m http.server 8004
+    cd $BASE
 
 Weighted Round-Round
 ~~~~~~~~~~~~~~~~~~~~
@@ -137,6 +138,66 @@ Least Connection
 
 Session Persistence
 ~~~~~~~~~~~~~~~~~~~
+
+.. code:: conf
+
+    worker_processes  99;
+
+    events {    
+        worker_connections  1024;
+    }
+
+    http {
+      upstream balancer{
+        ip_hash;
+        server 127.0.0.1:8001;
+        server 127.0.0.1:8002;
+        server 127.0.0.1:8003;
+        server 127.0.0.1:8004;
+      } 
+        
+      server { 
+        listen 8000;
+        server_name balancer.least_conn;
+        location / {
+          proxy_pass http://balancer;
+        }
+      } 
+    }
+
+
+Testing
+~~~~~~~
+
+
+Least connections
+-----------------
+
+In order to test the balancing, we use the tool Apache Bench, short 'ab', which
+simulates c concurrent connections and runs until n total requests were completed.
+
+.. code:: bash
+
+    ab -n 1000000 -c 20 http://127.0.0.1:8000/index.html
+
+The above runs a test with 20 concurrent connections and 1000000 total requests.
+
+When doing that test to a single webserver, the site is either very slow or
+entirely unresponsive.
+
+With load balancing, the site is still available, see the following tests:
+
+.. image:: static/request1.jpg
+    :width: 90%
+    
+.. image:: static/request2.jpg
+    :width: 90%
+    
+.. image:: static/request3.jpg
+    :width: 90%
+    
+.. image:: static/request4.jpg
+    :width: 90%
 
 Time recording
 ~~~~~~~~~~~~~~
