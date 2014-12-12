@@ -30,12 +30,13 @@ class LoadHandler(BaseHTTPRequestHandler):
         start_time = datetime.datetime.now()
         salt = str(start_time).encode('utf-8')
         target = 5
-        hexdigest = hash_cash(salt, target, algo)
+        hexdigest = hash_cash(salt, target)
         end_time = datetime.datetime.now()
 
         message_parts = [
                 '<!doctype html public>',
                 '<html><head><title>Welcome to {0}!</title></head><body>'.format(sys.argv[1]),
+                '<h1>Server: {0}</h1>'.format(sys.argv[1]),
                 'salt: {0}<br />'.format(salt.decode('utf-8')),
                 'target: {0}<br />'.format(target),
                 'hashdigest: {0}<br />'.format(hexdigest),
