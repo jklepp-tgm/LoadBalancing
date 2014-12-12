@@ -1,4 +1,3 @@
 README.pdf
-RoundRobin/.vagrant
-LeastConnections/.vagrant
-SessionPersistence/.vagrant/
+.vagrant
+__pycache__
