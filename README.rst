@@ -32,7 +32,7 @@ Nginx installation
     wget http://nginx.org/download/nginx-1.7.8.tar.gz
     tar xf nginx-1.7.8.tar.gz
     cd nginx-1.7.8/
-    ./configure --prefix=$(pwd)/.. --with-cc=clang --with-cpp=clang++
+    ./configure --prefix=$(pwd)/..
     make
     make install
 
