@@ -239,7 +239,7 @@ Task                              Date       From  To    Duration
 Design                            2014-12-12 08:00 08:30   00:30
 Least connection                  2014-12-12 08:30 09:00   00:30
 Session persistence               2014-12-12 09:00 09:10   00:10
-Testing, documentation            2014-12-12 09:10   
+Testing, documentation            2014-12-12 09:10 10:00   00:50
 **TOTAL**                                                **00:00**
 ================================= ========== ===== ===== =========
 
