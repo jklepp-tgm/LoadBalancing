@@ -52,11 +52,13 @@ either in /usr/local/nginx/conf/ or in whether directory you compiled Nginx in.
 Balanced servers
 ================
 
-To show how Nginx' balancing works, we are starting 4 Python-based web servers,
-each of them serving a HTML page.
+To show how Nginx' balancing works, we are starting 4 Python-based web servers.
 
-The http.server library is a very small Python3 standard library, which can serve
-static HTML pages.
+There are 3 available implementations:
+
+* Memory load (memory.py)
+* CPU cycles (cpu.py)
+* I/O (io.py)
 
 The servers are being started like this (Python3 required):
 
@@ -65,14 +67,25 @@ The servers are being started like this (Python3 required):
     # should point to the directory where the README.pdf can be found
     BASE=`pwd`
     cd $BASE/web/server1
-    screen -c /dev/null -dmS server1 python3 -m http.server 8001
+    screen -c /dev/null -dmS server1 python3 <implementation> 8001
     cd $BASE/web/server2
-    screen -c /dev/null -dmS server2 python3 -m http.server 8002
+    screen -c /dev/null -dmS server2 python3 <implementation> 8002
     cd $BASE/web/server3
-    screen -c /dev/null -dmS server3 python3 -m http.server 8003
+    screen -c /dev/null -dmS server3 python3 <implementation> 8003
     cd $BASE/web/server4
-    screen -c /dev/null -dmS server4 python3 -m http.server 8004
+    screen -c /dev/null -dmS server4 python3 <implementation> 8004
     cd $BASE
+
+The value of <implementation> is any of the filenames above.
+
+e.g.:
+
+.. code:: bash
+
+    [..]
+    screen -c /dev/null -dmS server1 python3 memory.py 8001
+    [..]
+
 
 Weighted Round-Round
 ====================
