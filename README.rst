@@ -39,6 +39,39 @@ Nginx installation
 Weighted Round-Round
 ~~~~~~~~~~~~~~~~~~~~
 
+.. code:: conf
+
+    #user  nobody;
+    worker_processes  99;
+
+    #error_log  logs/error.log;
+    #error_log  logs/error.log  notice;
+    #error_log  logs/error.log  info;
+
+    #pid        logs/nginx.pid; 
+
+
+    events {    
+        worker_connections  1024;
+    }
+
+    http {
+      upstream balancer{
+        server 127.0.0.1:8000 weight=3;
+        server 127.0.0.1:8001 weight=2;
+        server 127.0.0.1:8002 weight=1;
+        server 127.0.0.1:8003 weight=1;
+      } 
+        
+      server { 
+        listen 8080;
+        server_name balancer.web;
+        location / {
+          proxy_pass http://balancer;
+        }
+      } 
+    }
+
 Session Persistence
 -------------------
 
