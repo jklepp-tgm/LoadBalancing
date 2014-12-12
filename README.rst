@@ -76,15 +76,7 @@ Weighted Round-Round
 
 .. code:: conf
 
-    #user  nobody;
     worker_processes  99;
-
-    #error_log  logs/error.log;
-    #error_log  logs/error.log  notice;
-    #error_log  logs/error.log  info;
-
-    #pid        logs/nginx.pid; 
-
 
     events {    
         worker_connections  1024;
@@ -245,3 +237,4 @@ Sources
 [1] "Praktische Arbeit 2 zur Vorlesung 'Verteilte Systeme' ETH Zürich, SS 2002", Prof.Dr.B.Plattner, übernommen von Prof.Dr.F.Mattern (http://www.tik.ee.ethz.ch/tik/education/lectures/VS/SS02/Praktikum/aufgabe2.pdf)
 [2] http://www.tik.ee.ethz.ch/education/lectures/VS/SS02/Praktikum/loesung2.zip
 [3] "Using nginx as HTTP load balancer", NGINX, http://nginx.org/en/docs/http/load_balancing.html, last visited: 2014-12-12
+[4] "Nginx Loadbalancing.rst", Jakob Klepp, https://gist.github.com/jklepp-tgm/8912919, last visited: 2014-12-12
