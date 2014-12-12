@@ -1,8 +1,9 @@
+##############
 Load Balancing
-==============
+##############
 
-Aufgabenstellung
-~~~~~~~~~~~~~~~~
+Requirements
+============
 
 Es soll ein Load Balancer mit mindestens 2 unterschiedlichen Load-Balancing Methoden (jeweils 7 Punkte) implementiert werden (ähnlich dem PI Beispiel [1]; Lösung zum Teil veraltet [2]). Eine Kombination von mehreren Methoden ist möglich. Die Berechnung bzw. das Service ist frei wählbar!
 
@@ -25,9 +26,10 @@ Gruppenarbeit: 2 Personen
 Abgabe: Protokoll mit Designüberlegungen / Umsetzung / Testszenarien, Sourcecode (mit allen notwendigen Bibliotheken), Java-Doc, Jar
 
 Nginx installation
-~~~~~~~~~~~~~~~~~~
+==================
 
 To install Nginx, follow the instructions below.
+
 Alternatively, one can also use the system's package manager, the package name
 is nginx.
 
@@ -42,16 +44,17 @@ is nginx.
     make install
 
 Nginx configuration
-~~~~~~~~~~~~~~~~~~~
+===================
 
 All the following configuration is done in the file nginx.conf, which can be found
 either in /usr/local/nginx/conf/ or in whether directory you compiled Nginx in.
 
 Balanced servers
-~~~~~~~~~~~~~~~~
+================
 
 To show how Nginx' balancing works, we are starting 4 Python-based web servers,
 each of them serving a HTML page.
+
 The http.server library is a very small Python3 standard library, which can serve
 static HTML pages.
 
@@ -72,7 +75,7 @@ The servers are being started like this (Python3 required):
     cd $BASE
 
 Weighted Round-Round
-~~~~~~~~~~~~~~~~~~~~
+====================
 
 .. code:: conf
 
@@ -100,7 +103,7 @@ Weighted Round-Round
     }
 
 Least Connection
-~~~~~~~~~~~~~~~~
+================
 
 .. code:: conf
 
@@ -129,7 +132,7 @@ Least Connection
     }
 
 Session Persistence
-~~~~~~~~~~~~~~~~~~~
+===================
 
 In Nginx, session persistence can be achieved by using the 'ip_hash' algorithm.
 The ip_hash algorithm will assign a client to a server on their first request
@@ -171,11 +174,10 @@ It is also possible to weigh each server (similar to weighted RR above).
 
 
 Testing
-~~~~~~~
-
+=======
 
 Least connection
-----------------
+~~~~~~~~~~~~~~~~
 
 In order to test the balancing, we use the tool Apache Bench, short 'ab', which
 simulates c concurrent connections and runs until n total requests were completed.
@@ -191,23 +193,32 @@ entirely unresponsive.
 
 With load balancing, the site is still available, see the following tests:
 
-.. image:: static/request1.jpg
-    :width: 90%
-    
-.. image:: static/request2.jpg
-    :width: 90%
-    
-.. image:: static/request3.jpg
-    :width: 90%
-    
-.. image:: static/request4.jpg
-    :width: 90%
+.. image:: _static/request1.jpg
+    :width: 70%
+
+*The first request is being passed to server 4*
+
+.. image:: _static/request2.jpg
+    :width: 70%
+
+*Due to not enough requests, the request is being passed to server 3 in some
+sort of round-robin manner*
+
+.. image:: _static/request3.jpg
+    :width: 70%
+
+*Server 3 is on low usage again*
+
+.. image:: _static/request4.jpg
+    :width: 70%
+
+*Now Nginx selected Server 2*
 
 Time recording
-~~~~~~~~~~~~~~
+==============
 
 Andreas Willinger
------------------
+~~~~~~~~~~~~~~~~~
 
 ================================= ========== ===== ===== =========
 Task                              Date       From  To    Duration
@@ -220,7 +231,7 @@ Testing, documentation            2014-12-12 09:10
 ================================= ========== ===== ===== =========
 
 Jakob Klepp
------------
+~~~~~~~~~~~
 
 ================================= ========== ===== ===== =========
 Task                              Date       From  To    Duration
@@ -232,9 +243,42 @@ vagrant file                      2014-12-12 09:00
 ================================= ========== ===== ===== =========
 
 Sources
-~~~~~~~
+=======
 
-[1] "Praktische Arbeit 2 zur Vorlesung 'Verteilte Systeme' ETH Zürich, SS 2002", Prof.Dr.B.Plattner, übernommen von Prof.Dr.F.Mattern (http://www.tik.ee.ethz.ch/tik/education/lectures/VS/SS02/Praktikum/aufgabe2.pdf)
-[2] http://www.tik.ee.ethz.ch/education/lectures/VS/SS02/Praktikum/loesung2.zip
-[3] "Using nginx as HTTP load balancer", NGINX, http://nginx.org/en/docs/http/load_balancing.html, last visited: 2014-12-12
-[4] "Nginx Loadbalancing.rst", Jakob Klepp, https://gist.github.com/jklepp-tgm/8912919, last visited: 2014-12-12
+.. _1:
+
+[1] "Praktische Arbeit 2 zur Vorlesung 'Verteilte Systeme' ETH Zürich, SS 2002", Prof.Dr.B.Plattner, übernommen von Prof.Dr.F.Mattern
+     http://www.tik.ee.ethz.ch/tik/education/lectures/VS/SS02/Praktikum/aufgabe2.pdf
+     last visited: 2014-12-12
+
+.. _2:
+
+[2] "loseung2.zip"
+     http://www.tik.ee.ethz.ch/education/lectures/VS/SS02/Praktikum/loesung2.zip
+     last visited: 2014-12-12
+
+.. _3:
+
+[3] "Using nginx as HTTP load balancer"
+     http://nginx.org/en/docs/http/load_balancing.html
+     last visited: 2014-12-12
+
+.. _4:
+
+[4] "Nginx Loadbalancing.rst"
+     https://gist.github.com/jklepp-tgm/8912919
+     last visited: 2014-12-12
+
+
+.. header::
+
+    +-------------+-------------------+------------+
+    | Title       | Author            | Date       |
+    +=============+===================+============+
+    | ###Title### | Andreas Willinger | 2014-12-12 |
+    |             | — Jakob Klepp     |            |
+    +-------------+-------------------+------------+
+
+.. footer::
+
+    ###Page### / ###Total###
