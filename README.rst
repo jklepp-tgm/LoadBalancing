@@ -68,14 +68,14 @@ Weighted Round-Round
 
     http {
       upstream balancer{
-        server 127.0.0.1:8000 weight=3;
-        server 127.0.0.1:8001 weight=2;
-        server 127.0.0.1:8002 weight=1;
+        server 127.0.0.1:8001 weight=3;
+        server 127.0.0.1:8002 weight=2;
         server 127.0.0.1:8003 weight=1;
+        server 127.0.0.1:8004 weight=1;
       } 
         
       server { 
-        listen 8080;
+        listen 8000;
         server_name balancer.web;
         location / {
           proxy_pass http://balancer;
