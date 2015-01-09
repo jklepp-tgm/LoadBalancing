@@ -71,6 +71,8 @@ class LoadHandler(BaseHTTPRequestHandler):
 
 if __name__ == '__main__':
     import sys
-    port = int(sys.argv[1])
+    port = 8080
+    if len(sys.argv) >= 2:
+        port = int(sys.argv[1])
     httpd = HTTPServer(('0.0.0.0', port), LoadHandler)
     httpd.serve_forever()
