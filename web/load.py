@@ -23,7 +23,7 @@ class LoadHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         path = self.path
         if path in paths.keys():
-            handler = paths[path](self.request, self.client_address, self.server)
+            paths[path].do_GET(self)
         else:
             message_parts = """<!doctype html public>
                                <html>
