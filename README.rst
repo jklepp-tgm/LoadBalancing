@@ -189,6 +189,9 @@ It is also possible to weigh each server (similar to weighted RR above).
 Testing
 =======
 
+Weighted Round Robin
+~~~~~~~~~~~~~~~~~~~~
+
 Least connection
 ~~~~~~~~~~~~~~~~
 
@@ -226,6 +229,9 @@ sort of round-robin manner*
     :width: 70%
 
 *Now Nginx selected Server 2*
+
+Session persistence
+~~~~~~~~~~~~~~~~~~~
 
 Time recording
 ==============
