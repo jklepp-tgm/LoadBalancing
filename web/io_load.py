@@ -9,6 +9,7 @@ class LoadHandler(BaseHTTPRequestHandler):
         super(LoadHandler, self).__init__(request, client_address, server)
 
     def do_GET(self):
+        print("io_load.py got a request")
         parsed_path = urllib.parse.urlparse(self.path)
         if parsed_path.path != '/':
             message = '<h1>400 Bad Request</h1>\r\n'

@@ -10,6 +10,7 @@ class LoadHandler(BaseHTTPRequestHandler):
         super(LoadHandler, self).__init__(request, client_address, server)
 
     def do_GET(self):
+        print("memory_load.py got a request")
         port = 0
         
         for name, value in sorted(self.headers.items()):
@@ -63,11 +64,12 @@ class LoadHandler(BaseHTTPRequestHandler):
                 '<br>Protocol version: %s' % self.protocol_version,
                 '</body></html>',
                 ]
-        
+
         message = '\r\n'.join(response)
         self.send_response(200)
         self.end_headers()
         self.wfile.write(message.encode('utf-8'))
+
 
 if __name__ == '__main__':
     import sys

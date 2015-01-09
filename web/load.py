@@ -55,11 +55,9 @@ class LoadHandler(BaseHTTPRequestHandler):
                                
                                </body>
                                </html>"""
-            #print(sys.argv[1])
-            #print(base64.b64encode(sys.argv[1].encode('utf8')))
+
             message_parts = message_parts.split('\n')
-            #for name, value in sorted(self.headers.items()):
-            #    message_parts.append('%s=%s' % (name, value.rstrip()))
+
             message_parts.append('')
             message = '\r\n'.join(message_parts)
             self.send_response(200)
