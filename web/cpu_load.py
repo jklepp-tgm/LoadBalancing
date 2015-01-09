@@ -28,6 +28,7 @@ class LoadHandler(BaseHTTPRequestHandler):
         super(LoadHandler, self).__init__(request, client_address, server)
 
     def do_GET(self):
+        print("cpu_load.py got a request")
         start_time = datetime.datetime.now()
         salt = str(start_time).encode('utf-8')
         target = 5
