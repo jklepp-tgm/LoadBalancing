@@ -54,7 +54,7 @@ class LoadHandler(BaseHTTPRequestHandler):
                                <div id="wrapper" style="width: 100%; margin: auto auto auto auto;">
                                    <marquee direction="down" width="100%" height="50%" behavior="alternate" >
                                        <marquee behavior="alternate">
-                                           <h1>Welcome to Server 1!</h1>
+                                           <h1>Welcome to Server {0}!</h1>
                                        </marquee>
                                    </marquee>
                                </div>

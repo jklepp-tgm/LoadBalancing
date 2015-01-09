@@ -7,7 +7,7 @@ VAGRANTFILE_API_VERSION = "2"
 
 $install_dependencies = <<SCRIPT
 apt-get update
-apt-get -y install screen python3
+apt-get -y install screen python3 python3-psutil
 apt-get -y build-dep nginx-full
 SCRIPT
 
@@ -20,31 +20,29 @@ make
 make install
 SCRIPT
 
-$start_servers_sessionpersistence = <<SCRIPT
+$start_servers = <<SCRIPT
+echo "================"
+echo "Starting Servers"
+echo "================"
 cd /web
-screen -c /dev/null -dmS server_sessionpersistence1 python3 -m load.py 7001
-screen -c /dev/null -dmS server_sessionpersistence2 python3 -m load.py 7002
-screen -c /dev/null -dmS server_sessionpersistence3 python3 -m load.py 7003
-screen -c /dev/null -dmS server_sessionpersistence4 python3 -m load.py 7004
-SCRIPT
-
-$start_servers_roundrobin = <<SCRIPT
-cd /web
-screen -c /dev/null -dmS server_roundrobin1 python3 -m load.py 8001
-screen -c /dev/null -dmS server_roundrobin2 python3 -m load.py 8002
-screen -c /dev/null -dmS server_roundrobin3 python3 -m load.py 8003
-screen -c /dev/null -dmS server_roundrobin4 python3 -m load.py 8004
-SCRIPT
-
-$start_servers_leastconnections = <<SCRIPT
-cd /web
-screen -c /dev/null -dmS server_leastconnections1 python3 -m load.py 9001
-screen -c /dev/null -dmS server_leastconnections2 python3 -m load.py 9002
-screen -c /dev/null -dmS server_leastconnections3 python3 -m load.py 9003
-screen -c /dev/null -dmS server_leastconnections4 python3 -m load.py 9004
+screen -c /dev/null -dmS server_sessionpersistence1 python3 load.py 4001
+screen -c /dev/null -dmS server_sessionpersistence2 python3 load.py 4002
+screen -c /dev/null -dmS server_sessionpersistence3 python3 load.py 4003
+screen -c /dev/null -dmS server_sessionpersistence4 python3 load.py 4004
 SCRIPT
 
 $start_nginx = <<SCRIPT
+ps cax | grep nginx > /dev/null
+if [ $? -eq 0 ]; then
+  echo "================"
+  echo "Restarting nginx"
+  echo "================"
+  killall nginx
+else
+  echo "=============="
+  echo "Starting nginx"
+  echo "=============="
+fi
 nginx/sbin/nginx
 SCRIPT
 
@@ -68,28 +66,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # within the machine from a port on the host machine.
   # Session Persistence
   config.vm.network "forwarded_port", guest: 7000, host: 7000
-  config.vm.network "forwarded_port", guest: 7001, host: 7001
-  config.vm.network "forwarded_port", guest: 7002, host: 7002
-  config.vm.network "forwarded_port", guest: 7003, host: 7003
-  config.vm.network "forwarded_port", guest: 7004, host: 7004
   # Round Robin
   config.vm.network "forwarded_port", guest: 8000, host: 8000
-  config.vm.network "forwarded_port", guest: 8001, host: 8001
-  config.vm.network "forwarded_port", guest: 8002, host: 8002
-  config.vm.network "forwarded_port", guest: 8003, host: 8003
-  config.vm.network "forwarded_port", guest: 8004, host: 8004
   # Least Connections
   config.vm.network "forwarded_port", guest: 9000, host: 9000
-  config.vm.network "forwarded_port", guest: 9001, host: 9001
-  config.vm.network "forwarded_port", guest: 9002, host: 9002
-  config.vm.network "forwarded_port", guest: 9003, host: 9003
-  config.vm.network "forwarded_port", guest: 9004, host: 9004
+  # Python servers
+  config.vm.network "forwarded_port", guest: 4001, host: 4001
+  config.vm.network "forwarded_port", guest: 4002, host: 4002
+  config.vm.network "forwarded_port", guest: 4003, host: 4003
+  config.vm.network "forwarded_port", guest: 4004, host: 4004
 
   config.vm.provision "shell", inline: $install_dependencies
   config.vm.provision "shell", inline: $install_nginx, privileged: false
   config.vm.provision "file", source: "nginx_load_balancer.conf", destination: "nginx/conf/nginx.conf"
-  config.vm.provision "shell", inline: $start_servers_sessionpersistence, run: "always", privileged: false
-  config.vm.provision "shell", inline: $start_servers_roundrobin, run: "always", privileged: false
-  config.vm.provision "shell", inline: $start_servers_leastconnections, run: "always", privileged: false
+  config.vm.provision "shell", inline: $start_servers, run: "always", privileged: false
   config.vm.provision "shell", inline: $start_nginx, run: "always", privileged: false
 end
