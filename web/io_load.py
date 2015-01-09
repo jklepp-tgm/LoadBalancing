@@ -11,7 +11,7 @@ class LoadHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         print("io_load.py got a request")
         parsed_path = urllib.parse.urlparse(self.path)
-        if parsed_path.path != '/':
+        if parsed_path.path != '/' and parsed_path.path != '/io':
             message = '<h1>400 Bad Request</h1>\r\n'
             self.send_response(400)
             self.send_header('Content-type', 'text/html')

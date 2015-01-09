@@ -25,7 +25,7 @@ class LoadHandler(BaseHTTPRequestHandler):
             memory = ' ' * 52428800
             
             # wait a bit
-            duration = randint(0, 1)
+            duration = randint(1, 2)
             sleep(duration)
             
             # free up the memory again
