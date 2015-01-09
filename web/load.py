@@ -24,8 +24,8 @@ class LoadHandler(BaseHTTPRequestHandler):
         if hasattr(self, 'path'):
             path = self.path
             if path in paths.keys():
-                handler = paths[path](self.request, self.client_address, self.server)
-                handler.do_GET()
+                paths[path].do_GET(self)
+
         else:
             message_parts =  """<!doctype html public>
                                 <html>
