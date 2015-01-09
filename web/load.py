@@ -21,41 +21,42 @@ class LoadHandler(BaseHTTPRequestHandler):
         self.server = server
 
     def do_GET(self):
-        path = self.path
-        if path in paths.keys():
-            handler = paths[path](self.request, self.client_address, self.server)
-            handler.do_GET()
+        if hasattr(self, 'path'):
+            path = self.path
+            if path in paths.keys():
+                handler = paths[path](self.request, self.client_address, self.server)
+                handler.do_GET()
         else:
-            message_parts = """<!doctype html public>
-                               <html>
-                               <head>
-                                   <title>Welcome to Server """ + sys.argv[1] + """!</title>
-                                   <style>
-                                       body {
-                                           -webkit-animation: myfirst 5s; /* Chrome, Safari, Opera */
-                                           animation: myfirst 5s;
-                                           background: yellow;}
-                                       /* Chrome, Safari, Opera */
-                                       @-webkit-keyframes myfirst {
-                                           from {background: red;}
-                                           to {background: yellow;}}
-                                       /* Standard syntax */
-                                       @keyframes myfirst {
-                                           from {background: red;}
-                                           to {background: yellow;}} 
-                                   </style>
-                               </head>
-                               <body>
-                               <div id="wrapper" style="width: 100%; margin: auto auto auto auto;">
-                                   <marquee direction="down" width="100%" height="50%" behavior="alternate" >
-                                       <marquee behavior="alternate">
-                                           <h1>Welcome to Server """ + sys.argv[1] + """!</h1>
-                                       </marquee>
-                                   </marquee>
-                               </div>
-                               
-                               </body>
-                               </html>"""
+            message_parts =  """<!doctype html public>
+                                <html>
+                                <head>
+                                    <title>Welcome to Server """ + sys.argv[1] + """!</title>
+                                    <style>
+                                        body {
+                                            -webkit-animation: myfirst 5s; /* Chrome, Safari, Opera */
+                                            animation: myfirst 5s;
+                                            background: yellow;}
+                                        /* Chrome, Safari, Opera */
+                                        @-webkit-keyframes myfirst {
+                                            from {background: red;}
+                                            to {background: yellow;}}
+                                        /* Standard syntax */
+                                        @keyframes myfirst {
+                                            from {background: red;}
+                                            to {background: yellow;}} 
+                                    </style>
+                                </head>
+                                <body>
+                                <div id="wrapper" style="width: 100%; margin: auto auto auto auto;">
+                                    <marquee direction="down" width="100%" height="50%" behavior="alternate" >
+                                        <marquee behavior="alternate">
+                                            <h1>Welcome to Server """ + sys.argv[1] + """!</h1>
+                                        </marquee>
+                                    </marquee>
+                                </div>
+                                
+                                </body>
+                                </html>"""
 
             message_parts = message_parts.split('\n')
 
