@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import urllib
+import base64
 
 from cpu_load import LoadHandler as CpuLoadHandler
 from io_load import LoadHandler as IoLoadHandler
@@ -27,47 +28,43 @@ class LoadHandler(BaseHTTPRequestHandler):
             message_parts = """<!doctype html public>
                                <html>
                                <head>
-                                   <title>Welcome to Server {0}!</title>
+                                   <title>Welcome to Server """ + sys.argv[1] + """!</title>
                                    <style>
                                        body {
                                            -webkit-animation: myfirst 5s; /* Chrome, Safari, Opera */
                                            animation: myfirst 5s;
-                                           background: yellow;
-                                       }
-                               
+                                           background: yellow;}
                                        /* Chrome, Safari, Opera */
                                        @-webkit-keyframes myfirst {
                                            from {background: red;}
-                                           to {background: yellow;}
-                                       }
-                               
+                                           to {background: yellow;}}
                                        /* Standard syntax */
                                        @keyframes myfirst {
                                            from {background: red;}
-                                           to {background: yellow;}
-                                       } 
+                                           to {background: yellow;}} 
                                    </style>
                                </head>
-                               
                                <body>
-                               
                                <div id="wrapper" style="width: 100%; margin: auto auto auto auto;">
                                    <marquee direction="down" width="100%" height="50%" behavior="alternate" >
                                        <marquee behavior="alternate">
-                                           <h1>Welcome to Server {0}!</h1>
+                                           <h1>Welcome to Server """ + sys.argv[1] + """!</h1>
                                        </marquee>
                                    </marquee>
                                </div>
                                
                                </body>
-                               </html>""".split('\n').format(sys.argv[1])
-        for name, value in sorted(self.headers.items()):
-            message_parts.append('%s=%s' % (name, value.rstrip()))
-        message_parts.append('')
-        message = '\r\n'.join(message_parts)
-        self.send_response(200)
-        self.end_headers()
-        self.wfile.write(message.encode('utf-8'))
+                               </html>"""
+            #print(sys.argv[1])
+            #print(base64.b64encode(sys.argv[1].encode('utf8')))
+            message_parts = message_parts.split('\n')
+            #for name, value in sorted(self.headers.items()):
+            #    message_parts.append('%s=%s' % (name, value.rstrip()))
+            message_parts.append('')
+            message = '\r\n'.join(message_parts)
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(message.encode('utf-8'))
 
 if __name__ == '__main__':
     import sys
