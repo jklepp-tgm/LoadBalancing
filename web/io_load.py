@@ -3,6 +3,23 @@ import urllib
 import fnmatch
 import os
 import time
+import sys
+
+
+def file_walk():
+    response = []
+
+    for root, dirnames, filenames in os.walk('/'):
+        stop = time.time() - start
+        if stop >= 3.0:
+            response.append('<br>Execution stopped after %f seconds.' % (stop))
+            break; 
+        for filename in fnmatch.filter(filenames, 'test.txt'):
+            response.append('<br>File: '+os.path.join(root, filename))
+            response.append('<br>-> Match!')
+
+    return response
+
 
 class LoadHandler(BaseHTTPRequestHandler):
     def __init__(self, request, client_address, server):
@@ -10,29 +27,14 @@ class LoadHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         print("io_load.py got a request")
-        parsed_path = urllib.parse.urlparse(self.path)
-        if parsed_path.path != '/' and parsed_path.path != '/io':
-            message = '<h1>400 Bad Request</h1>\r\n'
-            self.send_response(400)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-            self.wfile.write(message.encode('utf-8'))
-            return
             
         start = time.time()
-        port = 0
-        
-        for name, value in sorted(self.headers.items()):
-            if name.lower() != 'host':
-                continue
-            value = value.rstrip()
-            port = int(value[value.index(':')+1:len(value)])
         
         response = [
                     '<html>',
                     '<head><title>I/O load test</title></head><body>',
                     '<h1>I/O load test</h1>',
-                    '<br>Server port: %s' % (port),
+                    '<br>Server port: %s' % (sys.argv[1]),
                     '<br>Client address: %s (%s)' % (self.client_address,
                                                     self.address_string()),
                     '<br>Server version: %s' % self.server_version,
@@ -40,16 +42,14 @@ class LoadHandler(BaseHTTPRequestHandler):
                     '<br>Protocol version: %s' % self.protocol_version,
         ]
         
-        for root, dirnames, filenames in os.walk('/'):
-            stop = time.time() - start
-            if stop >= 3.0:
-                response.append('<br>Execution stopped after %f seconds.' % (stop))
-                break; 
-            for filename in fnmatch.filter(filenames, 'test.txt'):
-                response.append('<br>File: '+os.path.join(root, filename))
-                response.append('<br>-> Match!')
+        fw = file_walk()
+
+        for l in fw:
+            response.append(l)
+
         response.append('</body>')
         response.append('</html>')
+        response.append('')
         
         message = '\r\n'.join(response)
         self.send_response(200)
