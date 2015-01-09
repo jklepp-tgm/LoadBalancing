@@ -8,8 +8,8 @@ from memory_load import LoadHandler as MemoryLoadHandler
 
 
 paths = {
-    '/cpu': CpuLoadHandler,
     '/io': IoLoadHandler,
+    '/cpu': CpuLoadHandler,
     '/memory': MemoryLoadHandler,}
 
 

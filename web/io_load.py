@@ -9,6 +9,8 @@ import sys
 def file_walk():
     response = []
 
+    start = time.time()
+
     for root, dirnames, filenames in os.walk('/'):
         stop = time.time() - start
         if stop >= 3.0:

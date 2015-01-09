@@ -3,6 +3,7 @@ import urllib
 import psutil
 from time import sleep
 from random import randint
+import sys
 
 
 class LoadHandler(BaseHTTPRequestHandler):
@@ -11,14 +12,9 @@ class LoadHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         print("memory_load.py got a request")
-        port = 0
-        
-        for name, value in sorted(self.headers.items()):
-            if name.lower() != 'host':
-                continue
-            value = value.rstrip()
-            port = int(value[value.index(':')+1:len(value)])
 
+        port = sys.argv[1]
+        
         if psutil.phymem_usage().percent < 80:
         
             # allocate 50MiB
