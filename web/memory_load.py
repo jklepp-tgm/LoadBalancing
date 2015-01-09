@@ -65,13 +65,16 @@ class LoadHandler(BaseHTTPRequestHandler):
                 '</body></html>',
                 ]
 
-            message = '\r\n'.join(response)
-            self.send_response(200)
-            self.end_headers()
-            self.wfile.write(message.encode('utf-8'))
+        message = '\r\n'.join(response)
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(message.encode('utf-8'))
+
 
 if __name__ == '__main__':
     import sys
-    port = int(sys.argv[1])
+    port = 8080
+    if len(sys.argv) >= 2:
+        port = int(sys.argv[1])
     httpd = HTTPServer(('0.0.0.0', port), LoadHandler)
     httpd.serve_forever()
