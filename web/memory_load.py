@@ -63,11 +63,11 @@ class LoadHandler(BaseHTTPRequestHandler):
                 '<br>Protocol version: %s' % self.protocol_version,
                 '</body></html>',
                 ]
-            
-            message = '\r\n'.join(response)
-            self.send_response(200)
-            self.end_headers()
-            self.wfile.write(message.encode('utf-8'))
+        
+        message = '\r\n'.join(response)
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(message.encode('utf-8'))
 
 if __name__ == '__main__':
     import sys
