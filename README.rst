@@ -5,7 +5,10 @@ Load Balancing
 Requirements
 ============
 
-Es soll ein Load Balancer mit mindestens 2 unterschiedlichen Load-Balancing Methoden (jeweils 7 Punkte) implementiert werden (ähnlich dem PI Beispiel [1]; Lösung zum Teil veraltet [2]). Eine Kombination von mehreren Methoden ist möglich. Die Berechnung bzw. das Service ist frei wählbar!
+Es soll ein Load Balancer mit mindestens 2 unterschiedlichen Load-Balancing Methoden
+(jeweils 7 Punkte) implementiert werden (ähnlich dem PI Beispiel [1]; Lösung zum
+Teil veraltet [2]). Eine Kombination von mehreren Methoden ist möglich.
+Die Berechnung bzw. das Service ist frei wählbar!
 
 Folgende Load Balancing Methoden stehen zur Auswahl:
 
@@ -15,15 +18,42 @@ Folgende Load Balancing Methoden stehen zur Auswahl:
 * Weighted Least Connection
 * Agent Based Adaptive Balancing / Server Probes
 
-Um die Komplexität zu steigern, soll zusätzlich eine "Session Persistence" (2 Punkte) implementiert werden.
+Um die Komplexität zu steigern, soll zusätzlich eine "Session Persistence" 
+(2 Punkte) implementiert werden.
+
+Auslastung
+~~~~~~~~~~
+
+Es sollen die einzelnen Server-Instanzen in folgenden Punkten belastet werden können:
+
+* Memory (RAM)
+* CPU Cycles
+* I/O Zugriff (Harddisk)
+
+Bedenken Sie dabei, dass die einzelnen Load Balancing Methoden unterschiedlich
+auf diese Auslastung reagieren werden. Dokumentieren Sie dabei aufkommenden
+Probleme ausführlich.
 Tests
 
-Die Tests sollen so aufgebaut sein, dass in der Gruppe jedes Mitglied mehrere Server fahren und ein Gruppenmitglied mehrere Anfragen an den Load Balancer stellen. Für die Abnahme wird empfohlen, dass jeder Server eine Ausgabe mit entsprechenden Informationen ausgibt, damit die Verteilung der Anfragen demonstriert werden kann.
+Die Tests sollen so aufgebaut sein, dass in der Gruppe jedes Mitglied mehrere
+Server fahren und ein Gruppenmitglied mehrere Anfragen an den Load Balancer stellen.
+Für die Abnahme wird empfohlen, dass jeder Server eine Ausgabe mit entsprechenden
+Informationen ausgibt, damit die Verteilung der Anfragen demonstriert werden kann.
 
 Modalitäten
+~~~~~~~~~~~
 
 Gruppenarbeit: 2 Personen
-Abgabe: Protokoll mit Designüberlegungen / Umsetzung / Testszenarien, Sourcecode (mit allen notwendigen Bibliotheken), Java-Doc, Jar
+Abgabe: Protokoll mit Designüberlegungen / Umsetzung / Testszenarien, Sourcecode
+(mit allen notwendigen Bibliotheken), Java-Doc, Jar
+
+Design
+======
+
+We decided to use HTTP, in particular Nginx, as it already supports load balancing
+as a reverse proxy.
+
+This saves implementation time, as you only have to configure the server.
 
 Nginx installation
 ==================
@@ -189,12 +219,6 @@ It is also possible to weigh each server (similar to weighted RR above).
 Testing
 =======
 
-Weighted Round Robin
-~~~~~~~~~~~~~~~~~~~~
-
-Least connection
-~~~~~~~~~~~~~~~~
-
 In order to test the balancing, we use the tool Apache Bench, short 'ab', which
 simulates c concurrent connections and runs until n total requests were completed.
 
@@ -202,36 +226,73 @@ simulates c concurrent connections and runs until n total requests were complete
 
     ab -n 1000000 -c 20 http://127.0.0.1:8000/index.html
 
-The above runs a test with 20 concurrent connections and 1000000 total requests.
+The above runs a test with 5 concurrent connections and 100 total requests.
 
-When doing that test to a single webserver, the site is either very slow or
-entirely unresponsive.
+Weighted Round Robin
+~~~~~~~~~~~~~~~~~~~~
 
-With load balancing, the site is still available, see the following tests:
+Memory:
 
-.. image:: _static/request1.jpg
+.. image:: _static/mem_weightedrr.jpg
     :width: 70%
 
-*The first request is being passed to server 4*
+*One can see that the LB balances the load around the different instances*
 
-.. image:: _static/request2.jpg
+CPU:
+
+.. image:: _static/cpu_weightedrr.jpg
     :width: 70%
 
-*Due to not enough requests, the request is being passed to server 3 in some
-sort of round-robin manner*
 
-.. image:: _static/request3.jpg
+I/O:
+
+.. image:: _static/io_weightedrr1.jpg
     :width: 70%
 
-*Server 3 is on low usage again*
-
-.. image:: _static/request4.jpg
+.. image:: _static/io_weightedrr2.jpg
     :width: 70%
 
-*Now Nginx selected Server 2*
+Least connection
+~~~~~~~~~~~~~~~~
+
+Memory:
+
+.. image:: _static/mem_leastconn.jpg
+    :width: 70%
+
+*Different from weightedRR, each instance gets a request (as all are at low load atm)*
+
+CPU:
+
+.. image:: _static/cpu_leastconn.jpg
+    :width: 70%
+
+
+I/O:
+
+.. image:: _static/io_leastconn.jpg
+    :width: 70%
 
 Session persistence
 ~~~~~~~~~~~~~~~~~~~
+
+For this test, we use simple static webpages, to not waste resources on the server.
+
+Request 1:
+
+.. image:: _static/persistence_req1.jpg
+    :width: 70%
+
+Request 2:
+
+.. image:: _static/persistence_req2.jpg
+    :width: 70%
+
+Request 3:
+
+.. image:: _static/persistence_req3.jpg
+    :width: 70%
+
 
 Time recording
 ==============
@@ -249,7 +310,8 @@ Testing, documentation            2014-12-12 09:10 10:00   00:50
 Load                              2014-12-12 10:20 12:40   02:20
 Load                              2015-01-09 08:15 09:00   00:45
 I/O, Memory fixing                2015-01-09 09:00 10:40   01:40
-**TOTAL**                                                **06:05**
+Testing                           2015-01-13 10:20 11:00   00:40
+**TOTAL**                                                **06:45**
 ================================= ========== ===== ===== =========
 
 Jakob Klepp
